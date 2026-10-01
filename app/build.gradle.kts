@@ -71,31 +71,7 @@ android {
     }
 }
 
-// ---------------------------------------------------------------------------
-// Vazirmatn (SIL Open Font License 1.1, https://github.com/rastikerdar/vazirmatn)
-// The TTF files are fetched once into res/font so no binary has to live in git.
-// ---------------------------------------------------------------------------
-val downloadVazirmatn = tasks.register("downloadVazirmatn") {
-    val outDir = file("src/main/res/font")
-    doLast {
-        outDir.mkdirs()
-        val fonts = mapOf(
-            "Regular" to "vazirmatn_regular",
-            "Medium" to "vazirmatn_medium",
-            "Bold" to "vazirmatn_bold"
-        )
-        fonts.forEach { (weight, resName) ->
-            val target = File(outDir, "$resName.ttf")
-            if (!target.exists() || target.length() < 10_000L) {
-                val url = "https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/ttf/Vazirmatn-$weight.ttf"
-                java.net.URI(url).toURL().openStream().use { input ->
-                    target.outputStream().use { output -> input.copyTo(output) }
-                }
-            }
-        }
-    }
-}
-tasks.named("preBuild") { dependsOn(downloadVazirmatn) }
+// Vazirmatn fonts (SIL OFL) are committed in app/src/main/res/font — no build-time download.
 
 dependencies {
     implementation("androidx.core:core-ktx:1.15.0")
