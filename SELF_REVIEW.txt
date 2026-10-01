@@ -1,0 +1,44 @@
+FARAKHVAN SOURCE DELIVERY REVIEW
+
+Verified in this environment:
+* 17 Kotlin source/test files and their Gradle Kotlin scripts scanned for balanced
+  braces, parentheses, brackets, closed literals/comments and duplicate imports.
+* 134 unique Persian string resources; every R.string reference resolves.
+* No legacy Android Support imports, Kotlin synthetics or ObjectBox references.
+* Six XML files parse; resource filenames are Android-compatible.
+* Manifest declares SMS, contacts, notifications, optional SIM and foreground
+  permissions; explicit exported flags, RTL, local FileProvider and specialUse
+  service. INTERNET and default-SMS-role requests are absent.
+* 28 DAO SQL statements parse with SQLite against an equivalent v1 schema.
+* SQLite guard checks cover sent-row timeout/retry protection, callback key
+  uniqueness, group member deduplication and cascading member deletion while
+  leaving historical campaigns intact.
+* A real Vazirmatn TTF was bundled and inspected for Persian glyph coverage.
+* MIT original copyright retained; full MIT and OFL notices are bundled as assets.
+* Source-only ./gradlew passes shell syntax checking, reads Gradle 8.9 properties
+  and verifies the official binary distribution checksum.
+* CI contains the exact ./gradlew assembleRelease command, SDK/JDK setup,
+  unit-test step, artifact upload, tag release and optional secret-only signing.
+
+Not verified:
+* Kotlin/Compose compilation, Android resource linking and Room/KSP compilation.
+* The included JUnit tests have not run here.
+* Actual GitHub workflow execution, installability, signing or release upload.
+* Physical SIM behavior, carrier callbacks/throttling, OEM background behavior,
+  accessibility, visual layout and supported Android-version runtime testing.
+
+Reason: this sandbox has no Android SDK, cached Gradle/Kotlin compiler or internet
+access. Static scans are not a compiler and are not evidence of a successful build.
+Do not distribute as a tested production app until CI and TESTING.txt pass.
+
+Conservative behavior:
+* Process death/timeout/mixed multipart success produce unknown/interrupted states.
+* Resume processes only pending rows; sent rows are never automatically repeated.
+* Unknown rows require individual explicit duplicate-risk retry confirmation.
+* Each attempt/part has a unique callback URI; callbacks are transactionally
+  deduplicated and stale attempts ignored.
+* No exactly-once or delivery guarantee is claimed.
+
+Intentional brief resolutions are documented in README.md: Persian-only UI,
+mandatory review plus optional extra confirmation, default-SIM access constraints,
+source-only Gradle bootstrap and spreadsheet-safe CSV number prefixes.

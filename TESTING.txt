@@ -1,0 +1,51 @@
+DEVICE ACCEPTANCE PLAN (NOT EXECUTED)
+
+Use a physical non-production phone and numbers whose owners consent to test
+messages. SMS charges apply. Start with two recipients and a short message.
+
+UI / STORAGE
+1. Create, color, rename and search a Persian group; restart to verify persistence.
+2. Add via contacts, manual entry, paste and copying from another group.
+3. Paste all Iranian formats and both digit alphabets; expect one canonical number.
+4. Save invalid/short-code values; verify red rows and no modem submission.
+5. Confirm multi-member/group deletion and swipe undo.
+6. Delete/rename original group; historical campaign must stay unchanged.
+7. Test long Persian names, font scaling, accessibility, keyboard, RTL/LTR numbers,
+   light/dark and all empty/loading/error states.
+
+PERMISSIONS / DEVICES
+1. Test supported physical devices on API 24, 26, 33, 34 and 35.
+2. Deny SEND_SMS: no SMS and no silent dispatch.
+3. Deny READ_CONTACTS: manual/paste/group sends must still work.
+4. Deny POST_NOTIFICATIONS on API 33+; check Android active-apps indication.
+5. Do not grant default-SMS role; the app must never request it.
+6. Test single/dual SIM, slot 1 default, slot 2 routing and removed/disabled SIM
+   interruption without silently falling back.
+7. Inspect merged APK manifest: no INTERNET permission.
+
+ENCODING / QUEUE / RECOVERY
+1. Test ASCII, GSM extension symbols, Persian and emoji near multipart boundaries;
+   compare preview with actual carrier segment counts.
+2. Personalize known/missing/long names. A token-only message with no name must
+   be skipped, not submitted as an empty SMS.
+3. Confirm 1/3/30 second minimum dispatch intervals and no recipient overlap.
+4. Leave app and lock phone during send. Tap notification to return to progress.
+5. Pause during pacing delay: no extra recipient until resume.
+6. Cancel in flight: pending rows remain unsent; late callbacks still reconcile.
+7. Airplane mode / real failed callback: retry only failed rows.
+8. Kill/force-stop during submission, reopen: interrupted campaign and unknown
+   in-flight row. Resume must never resend sent or unknown rows.
+9. Timeout/mixed multipart success: interrupt and require individual duplicate-risk
+   consent before any unknown-result retry.
+10. Duplicate/stale callbacks must not inflate counts or overwrite new attempts.
+11. Retry one failed number; all other results must be unchanged.
+12. Rapid send taps and navigation during preparation: one queue, no hidden send.
+
+CSV / CI / SIGNING
+1. Share complete/partial CSV: number,status,timestamp, UTF-8 BOM, quote escaping
+   and protective spreadsheet prefixes.
+2. Run main push, workflow_dispatch and a v* tag without signing secrets.
+3. Repeat with valid secret-backed keystore; install and verify certificate.
+4. Verify release/artifact filename and exactly one installable APK.
+5. Run ./gradlew assembleRelease and ./gradlew testDebugUnitTest on a clean
+   ubuntu-latest/JDK 17 runner. Review AAPT/KSP/Compose diagnostics.

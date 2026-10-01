@@ -1,0 +1,9 @@
+{
+  "static_checks": 2581,
+  "kotlin_files": 17,
+  "string_resources": 134,
+  "room_sql_statements": 28,
+  "xml_files": 6,
+  "compiled": false,
+  "device_tested": false
+}
