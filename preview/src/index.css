@@ -1,0 +1,9 @@
+@import url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css");
+@import "tailwindcss";
+
+html,
+body {
+  font-family: "Vazirmatn", system-ui, sans-serif;
+  background: #f6faf8;
+  color: #171d1b;
+}

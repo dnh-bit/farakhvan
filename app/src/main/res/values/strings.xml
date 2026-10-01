@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">فراخوان</string>
+
+    <!-- General -->
+    <string name="error_title">مشکلی پیش آمد</string>
+    <string name="error_subtitle">داده‌ها بارگذاری نشد. دوباره تلاش کنید.</string>
+    <string name="tab_groups">گروه‌ها</string>
+    <string name="tab_new_sms">پیامک جدید</string>
+    <string name="tab_history">تاریخچه</string>
+    <string name="settings_title">تنظیمات</string>
+    <string name="search">جستجو</string>
+    <string name="search_no_result">نتیجه‌ای پیدا نشد</string>
+    <string name="no_name">بدون نام</string>
+
+    <!-- Actions -->
+    <string name="action_save">ذخیره</string>
+    <string name="action_cancel">انصراف</string>
+    <string name="action_continue">ادامه</string>
+    <string name="action_not_now">الان نه</string>
+    <string name="action_close">بستن</string>
+    <string name="action_select_all">انتخاب همه</string>
+    <string name="action_delete">حذف</string>
+    <string name="action_undo">بازگردانی</string>
+    <string name="action_back">بازگشت</string>
+    <string name="action_add">افزودن</string>
+    <string name="action_ok">متوجه شدم</string>
+    <string name="action_pause">توقف موقت</string>
+    <string name="action_resume">ادامه</string>
+    <string name="action_resume_unsent">ادامه از اولین ارسال‌نشده</string>
+    <string name="action_cancel_send">لغو ارسال</string>
+    <string name="action_retry_failed">تلاش مجدد ناموفق‌ها (%d)</string>
+    <string name="action_send_again">ارسال دوباره</string>
+    <string name="action_copy_count">کپی (%d)</string>
+
+    <!-- Groups -->
+    <string name="group_new_title">گروه جدید</string>
+    <string name="group_rename_title">ویرایش گروه</string>
+    <string name="group_name">نام گروه</string>
+    <string name="group_emoji_optional">ایموجی (اختیاری)</string>
+    <string name="group_color">رنگ</string>
+    <string name="group_new_fab">گروه جدید</string>
+    <string name="group_deleted">گروه حذف شد</string>
+    <string name="groups_empty_title">اولین گروه خود را بسازید</string>
+    <string name="groups_empty_subtitle">مشتریان یا آشنایانی که مرتب برایشان پیام می‌فرستید را در یک گروه کنار هم بگذارید.</string>
+    <string name="group_last_used">آخرین استفاده: %s</string>
+    <string name="group_never_used">هنوز استفاده نشده</string>
+    <string name="group_member_count">%d عضو</string>
+    <string name="group_delete_title">حذف گروه</string>
+    <string name="group_delete_confirm">گروه «%s» و همهٔ اعضای آن حذف شود؟</string>
+    <string name="group_header">%1$d عضو · %2$d یکتا</string>
+    <string name="group_header_invalid">%d نامعتبر</string>
+    <string name="group_select_hint">یک گروه را انتخاب کنید</string>
+
+    <!-- Members -->
+    <string name="members_add">افزودن عضو</string>
+    <string name="add_pick_contacts">انتخاب از مخاطبین</string>
+    <string name="add_number">افزودن یک شماره</string>
+    <string name="add_paste_list">چسباندن فهرست</string>
+    <string name="add_from_group">کپی از گروه دیگر</string>
+    <string name="members_empty_title">این گروه هنوز عضوی ندارد</string>
+    <string name="members_empty_subtitle">با دکمهٔ «افزودن عضو» از مخاطبین انتخاب کنید، شماره تایپ کنید یا فهرستی از شماره‌ها بچسبانید.</string>
+    <string name="members_delete_title">حذف اعضا</string>
+    <string name="members_delete_confirm">%d عضو انتخاب‌شده حذف شود؟</string>
+    <string name="selected_count">%d انتخاب شد</string>
+    <string name="number_invalid">نامعتبر</string>
+    <string name="number_hint">شماره (مثلاً ۰۹۱۲۳۴۵۶۷۸۹)</string>
+    <string name="number_will_be_saved">ذخیره می‌شود: %s</string>
+    <string name="number_invalid_warning">شماره نامعتبر است؛ ذخیره می‌شود اما ارسال نخواهد شد.</string>
+    <string name="paste_hint">شماره‌ها را اینجا بچسبانید (هر خط، کاما، نقطه‌ویرگول یا فاصله)</string>
+    <string name="parse_summary">%1$d معتبر · %2$d نامعتبر · %3$d تکراری حذف‌شده</string>
+    <string name="add_report">%1$d شماره اضافه شد · %2$d تکراری حذف شد · %3$d نامعتبر</string>
+    <string name="copy_no_other_groups">گروه دیگری وجود ندارد.</string>
+
+    <!-- Contacts -->
+    <string name="contacts_pick_title">انتخاب مخاطبین</string>
+    <string name="contacts_add_selected">افزودن (%d)</string>
+    <string name="contacts_empty">مخاطبی در دستگاه پیدا نشد</string>
+    <string name="contacts_pick_button">انتخاب مخاطبین</string>
+    <string name="contacts_selected">%d مخاطب انتخاب شده</string>
+    <string name="contacts_clear">پاک‌کردن</string>
+
+    <!-- Permissions -->
+    <string name="perm_contacts_explain">برای انتخاب گیرنده‌ها از دفترچهٔ تلفن، فراخوان به مخاطبین شما نیاز دارد. مخاطبین هرگز از گوشی بیرون نمی‌روند.</string>
+    <string name="perm_allow">اجازهٔ دسترسی</string>
+    <string name="perm_sms_title">اجازهٔ ارسال پیامک</string>
+    <string name="perm_sms_explain">برای فرستادن پیامک از سیم‌کارت شما، فراخوان به اجازهٔ ارسال پیامک نیاز دارد. در اندروید ۱۳ و بالاتر اجازهٔ اعلان هم برای نمایش پیشرفت ارسال خواسته می‌شود. هزینهٔ پیامک‌ها طبق تعرفهٔ سیم‌کارت شما حساب می‌شود.</string>
+    <string name="perm_sms_denied_title">ارسال ممکن نیست</string>
+    <string name="perm_sms_denied_text">بدون اجازهٔ ارسال پیامک، فراخوان نمی‌تواند پیام بفرستد. از تنظیمات گوشی، بخش برنامه‌ها، فراخوان، مجوزها آن را فعال کنید.</string>
+
+    <!-- New SMS -->
+    <string name="target_group">گروه</string>
+    <string name="target_pasted">شماره‌ها</string>
+    <string name="target_contacts">مخاطبین</string>
+    <string name="target_pasted_label">شماره‌های چسبانده‌شده</string>
+    <string name="target_contacts_label">مخاطبین انتخابی</string>
+    <string name="compose_no_groups">هنوز گروهی نساخته‌اید.</string>
+    <string name="compose_create_group">ساخت گروه</string>
+    <string name="invalid_skipped_note">شماره‌های نامعتبر ارسال نمی‌شوند:</string>
+    <string name="message_label">متن پیام</string>
+    <string name="sms_counter_empty">متن پیام را بنویسید</string>
+    <string name="sms_counter">%1$s · %2$d از %3$d نویسه · %4$d پیامک برای هر گیرنده</string>
+    <string name="enc_gsm">لاتین (GSM-7)</string>
+    <string name="enc_unicode">یونیکد (فارسی)</string>
+    <string name="sms_total_cost">جمع هزینه: %d پیامک</string>
+    <string name="token_chip">درج {name}</string>
+    <string name="token_help">{name} در هر پیام با نام مخاطب جایگزین می‌شود؛ اگر نام مشخص نباشد خالی می‌ماند.</string>
+    <string name="sim_title">ارسال با سیم‌کارت</string>
+    <string name="sim_slot">سیم %1$d %2$s</string>
+    <string name="sim_permission_explain">این گوشی دو سیم‌کارت دارد. برای انتخاب سیم‌کارت، فراخوان به اجازهٔ خواندن وضعیت تلفن نیاز دارد.</string>
+    <string name="sim_permission_allow">اجازهٔ دسترسی به سیم‌کارت‌ها</string>
+    <string name="send_button">ارسال به %d نفر</string>
+    <string name="send_busy">ارسال دیگری در حال انجام است. صبر کنید یا آن را لغو کنید.</string>
+
+    <!-- Confirmation -->
+    <string name="confirm_title">تأیید ارسال</string>
+    <string name="confirm_recipients">%d گیرنده</string>
+    <string name="confirm_skipped">%d شمارهٔ نامعتبر نادیده گرفته می‌شود</string>
+    <string name="confirm_first_numbers">چند شمارهٔ اول:</string>
+    <string name="confirm_message">متن پیام</string>
+    <string name="confirm_cost">%1$d گیرنده · جمعاً %2$d پیامک (هزینه طبق تعرفهٔ سیم‌کارت شما)</string>
+    <string name="confirm_send">ارسال</string>
+
+    <!-- Campaign / progress -->
+    <string name="campaign_not_found">این ارسال پیدا نشد</string>
+    <string name="results_empty">گیرنده‌ای ثبت نشده است</string>
+    <string name="progress_of">%1$d از %2$d</string>
+    <string name="campaign_counts">ارسال‌شده: %1$d · ناموفق: %2$d · در انتظار: %3$d</string>
+    <string name="status_running">در حال ارسال</string>
+    <string name="status_paused">متوقف</string>
+    <string name="status_done">پایان‌یافته</string>
+    <string name="status_cancelled">لغوشده</string>
+    <string name="status_interrupted">ناتمام (قطع‌شده)</string>
+    <string name="result_sent">ارسال شد</string>
+    <string name="result_failed">ناموفق</string>
+    <string name="result_pending">در انتظار</string>
+    <string name="export_csv">خروجی CSV</string>
+    <string name="export_failed">ساخت فایل خروجی ناموفق بود</string>
+    <string name="cancel_confirm_title">لغو ارسال؟</string>
+    <string name="cancel_confirm_text">ارسال متوقف می‌شود. شماره‌هایی که هنوز نرفته‌اند «ناموفق» ثبت می‌شوند و بعداً می‌توانید دوباره بفرستید.</string>
+    <string name="retry_one_title">ارسال دوباره</string>
+    <string name="retry_one_text">پیام دوباره برای %s فرستاده شود؟</string>
+
+    <!-- History -->
+    <string name="history_empty_title">هنوز پیامی نفرستاده‌اید</string>
+    <string name="history_empty_subtitle">گزارش هر ارسال، همراه با نتیجهٔ هر شماره، اینجا ذخیره می‌شود.</string>
+    <string name="history_delete_title">حذف از تاریخچه</string>
+    <string name="history_delete_confirm">گزارش ارسال «%s» حذف شود؟</string>
+    <string name="history_delete_running">ارسالِ در حال انجام را نمی‌توان حذف کرد</string>
+    <string name="history_total">کل: %d</string>
+    <string name="history_sent">ارسال‌شده: %d</string>
+    <string name="history_failed">ناموفق: %d</string>
+
+    <!-- Settings -->
+    <string name="settings_delay_title">فاصلهٔ بین پیامک‌ها</string>
+    <string name="settings_delay_value">%d ثانیه</string>
+    <string name="settings_delay_hint">اپراتورها ارسال پشت‌سرهم را محدود می‌کنند؛ پیش‌فرض ۳ ثانیه است (۱ تا ۳۰).</string>
+    <string name="settings_sim_title">سیم‌کارت پیش‌فرض</string>
+    <string name="settings_sim_single">سیم‌کارت پیش‌فرض گوشی استفاده می‌شود.</string>
+    <string name="settings_theme_title">پوسته</string>
+    <string name="theme_system">مطابق سیستم</string>
+    <string name="theme_light">روشن</string>
+    <string name="theme_dark">تیره</string>
+    <string name="settings_language_title">زبان</string>
+    <string name="language_persian">فارسی</string>
+    <string name="settings_language_note">زبان برنامه فارسی است و کامل راست‌به‌چپ نمایش داده می‌شود.</string>
+    <string name="settings_confirm_title">تأیید پیش از ارسال</string>
+    <string name="settings_confirm_hint">پیش از هر ارسال، خلاصهٔ گیرنده‌ها و هزینه را نشان بده.</string>
+    <string name="settings_about_title">دربارهٔ برنامه</string>
+    <string name="about_version">نسخه %1$s (کد %2$d)</string>
+    <string name="about_offline">بدون اینترنت، بدون حساب کاربری و بدون ردیابی؛ هزینه فقط پیامک سیم‌کارت شماست.</string>
+    <string name="about_license">مجوز MIT؛ برگرفته از پروژهٔ متن‌باز «Text» اثر Carlos Anyona.</string>
+    <string name="about_font">فونت وزیرمتن (مجوز SIL OFL).</string>
+
+    <!-- Failure reasons (stored in the history) -->
+    <string name="reason_invalid_number">شمارهٔ نامعتبر</string>
+    <string name="reason_interrupted">ارسال قطع شد؛ نتیجه نامشخص است</string>
+    <string name="reason_cancelled">لغو شد</string>
+    <string name="reason_timeout">پاسخی از شبکه دریافت نشد</string>
+    <string name="reason_generic">خطای عمومی ارسال</string>
+    <string name="reason_no_service">آنتن یا سرویس شبکه در دسترس نیست</string>
+    <string name="reason_radio_off">حالت پرواز یا رادیوی گوشی خاموش است</string>
+    <string name="reason_null_pdu">پیام نامعتبر است</string>
+    <string name="reason_other">خطای ناشناخته (کد %d)</string>
+    <string name="reason_permission">اجازهٔ ارسال پیامک داده نشده است</string>
+
+    <!-- Notification -->
+    <string name="notif_channel_name">پیشرفت ارسال</string>
+    <string name="notif_progress">در حال ارسال %1$d/%2$d…</string>
+    <string name="notif_tap_to_return">برای بازگشت به برنامه ضربه بزنید</string>
+    <string name="notif_finished_title">ارسال تمام شد</string>
+    <string name="notif_finished_text">%1$d از %2$d پیام پردازش شد</string>
+</resources>

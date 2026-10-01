@@ -1,0 +1,12 @@
+.gradle/
+build/
+.idea/
+*.iml
+local.properties
+*.jks
+*.keystore
+key.properties
+.DS_Store
+captures/
+# Vazirmatn fonts are downloaded by the `downloadVazirmatn` Gradle task
+app/src/main/res/font/*.ttf
