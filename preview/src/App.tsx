@@ -32,7 +32,7 @@ const tree = `farakhvan-android/
    └─ src/main/
       ├─ AndroidManifest.xml
       ├─ res/ values/strings.xml (فارسی) · themes.xml · drawable/ · xml/file_paths.xml
-      └─ java/com/revosleap/text/
+      └─ java/com/farakhvan/text/
          ├─ MainActivity.kt · FarakhvanApp.kt
          ├─ data/     Entities · Daos · AppDatabase · Repo · Settings
          ├─ sending/  SendController · SendService (foreground)

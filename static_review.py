@@ -238,7 +238,7 @@ CREATE TABLE send_results(id INTEGER PRIMARY KEY, campaignId INTEGER
   REFERENCES campaigns(id) ON DELETE CASCADE, number TEXT, name TEXT, body TEXT,
   status TEXT, reason TEXT, updatedAt INTEGER);
 """)
-daos = (root / "app/src/main/java/com/revosleap/text/data/Daos.kt").read_text(encoding="utf-8")
+daos = (root / "app/src/main/java/com/farakhvan/text/data/Daos.kt").read_text(encoding="utf-8")
 queries = extract_queries(daos)
 check(len(queries) >= 15, f"Room queries found ({len(queries)})")
 for sql in queries:

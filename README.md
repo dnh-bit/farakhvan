@@ -4,7 +4,7 @@ Bulk group messaging for Android — **no server, no internet, no cost other tha
 
 Create named groups of phone numbers, type one message, and send it to every member with a single tap while watching per-number progress. Built for the typical shop owner who messages their own customers from their own phone.
 
-> Persian-only UI (fa), fully RTL, Material 3, Jetpack Compose. Package `com.revosleap.text`, version `0.1.0` (code 1).
+> Persian-only UI (fa), fully RTL, Material 3, Jetpack Compose. Package `com.farakhvan.text`, version `0.1.0` (code 1).
 
 <!-- Screenshot placeholder: add screenshots/groups.png, screenshots/new-sms.png, screenshots/progress.png -->
 ![Screenshots](docs/screenshots.png)
@@ -54,7 +54,7 @@ Notes:
 ## Project layout
 
 ```
-app/src/main/java/com/revosleap/text/
+app/src/main/java/com/farakhvan/text/
   MainActivity.kt, FarakhvanApp.kt
   data/     Entities, Daos, AppDatabase, Repo, Settings
   sending/  SendController (UI entry), SendService (foreground engine)

@@ -169,7 +169,7 @@
     <string name="settings_about_title">دربارهٔ برنامه</string>
     <string name="about_version">نسخه %1$s (کد %2$d)</string>
     <string name="about_offline">بدون اینترنت، بدون حساب کاربری و بدون ردیابی؛ هزینه فقط پیامک سیم‌کارت شماست.</string>
-    <string name="about_license">مجوز MIT؛ برگرفته از پروژهٔ متن‌باز «Text» اثر Carlos Anyona.</string>
+    <string name="about_license">مجوز متن‌باز MIT.</string>
     <string name="about_font">فونت وزیرمتن (مجوز SIL OFL).</string>
 
     <!-- Failure reasons (stored in the history) -->

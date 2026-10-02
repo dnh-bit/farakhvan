@@ -9,15 +9,15 @@ plugins {
 val releaseKeystorePath: String? = System.getenv("ANDROID_KEYSTORE_FILE")?.takeIf { it.isNotBlank() }
 
 android {
-    namespace = "com.revosleap.text"
+    namespace = "com.farakhvan.text"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.revosleap.text"
+        applicationId = "com.farakhvan.text"
         minSdk = 24
         targetSdk = 35
-        versionCode = 2
-        versionName = "0.0.2"
+        versionCode = 3
+        versionName = "0.0.3"
     }
 
     signingConfigs {
