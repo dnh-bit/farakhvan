@@ -12,8 +12,8 @@ class PhoneNormalizerTest {
     fun iranianFormatsShareOneCanonicalNumber() {
         listOf(
             "+989121234567", "00989121234567", "989121234567", "09121234567",
-            "9121234567", "\u06f0\u06f9\u06f1\u06f2\u06f1\u06f2\u06f3\u06f4\u06f5\u06f6",
-            "\u0660\u0669\u0661\u0662\u0661\u0662\u0663\u0664\u0665\u0666",
+            "9121234567", "\u06f0\u06f9\u06f1\u06f2\u06f1\u06f2\u06f3\u06f4\u06f5\u06f6\u06f7",
+            "\u0660\u0669\u0661\u0662\u0661\u0662\u0663\u0664\u0665\u0666\u0667",
             " (0912) 123-4567 "
         ).forEach {
             val p = PhoneNormalizer.normalize(it)
@@ -38,7 +38,7 @@ class PhoneNormalizerTest {
     @Test
     fun parseBulkSplitsDedupesAndCountsInvalids() {
         val parsed = PhoneNormalizer.parseBulk(
-            "09121234567,\u06f0\u06f9\u06f1\u06f2\u06f1\u06f2\u06f3\u06f4\u06f5\u06f6;00989121234567\n9121234567 123"
+            "09121234567,\u06f0\u06f9\u06f1\u06f2\u06f1\u06f2\u06f3\u06f4\u06f5\u06f6\u06f7;00989121234567\n9121234567 123"
         )
         assertEquals(3, parsed.duplicates)
         assertEquals(2, parsed.numbers.size)
