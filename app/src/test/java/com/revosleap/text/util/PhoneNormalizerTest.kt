@@ -49,7 +49,7 @@ class PhoneNormalizerTest {
 
     @Test
     fun spacesInsideOneNumberAreReassembled() {
-        val parsed = PhoneNormalizer.parseBulk("0912 345 6789")
+        val parsed = PhoneNormalizer.parseBulk("0912 123 4567")
         assertEquals(1, parsed.numbers.size)
         assertEquals(canonical, parsed.numbers.first().canonical)
     }

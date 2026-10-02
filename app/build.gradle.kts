@@ -94,3 +94,14 @@ dependencies {
 
     testImplementation("junit:junit:4.13.2")
 }
+
+// Print full assertion messages in CI so a failing test explains itself in the log.
+tasks.withType<Test>().configureEach {
+    testLogging {
+        events("failed", "skipped")
+        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+        showStackTraces = false
+        showCauses = true
+        showExceptions = true
+    }
+}
