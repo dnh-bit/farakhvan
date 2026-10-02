@@ -34,6 +34,9 @@ jobs:
           fi
           chmod +x gradlew
 
+      - name: Static source review
+        run: python3 static_review.py
+
       - name: Ensure debug keystore (fallback signing)
         run: |
           mkdir -p ~/.android
@@ -59,6 +62,9 @@ jobs:
             echo "No signing secrets found - falling back to debug signing."
           fi
 
+      - name: Unit tests
+        run: ./gradlew testDebugUnitTest
+
       - name: Build release APK
         env:
           ANDROID_KEYSTORE_FILE: ${{ steps.keystore.outputs.present == 'true' && format('{0}/release.jks', runner.temp) || '' }}
@@ -77,6 +83,17 @@ jobs:
           SRC=$(ls app/build/outputs/apk/release/*.apk | head -n1)
           cp "$SRC" "dist/farakhvan${SUFFIX}-v${VERSION}.apk"
           echo "path=dist/farakhvan${SUFFIX}-v${VERSION}.apk" >> "$GITHUB_OUTPUT"
+
+      - name: Signing certificate fingerprint
+        shell: bash
+        run: |
+          shopt -s nullglob
+          apks=($(ls "$ANDROID_HOME"/build-tools/*/apksigner 2>/dev/null | sort -V | tail -n1))
+          if [[ ${#apks[@]} -gt 0 ]]; then
+            "${apks[0]}" verify --print-certs dist/*.apk || true
+          else
+            echo "apksigner not found - skipping fingerprint"
+          fi
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
