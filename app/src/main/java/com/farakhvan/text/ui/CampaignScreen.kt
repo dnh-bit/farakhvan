@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.DoneAll
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Pause
@@ -408,6 +409,12 @@ private fun ResultRow(r: SendResultEntity, onClick: () -> Unit) {
                     tint = StatusColors.sent
                 )
 
+                ResultStatus.DELIVERED -> Icon(
+                    Icons.Filled.DoneAll,
+                    contentDescription = stringResource(R.string.result_delivered),
+                    tint = StatusColors.sent
+                )
+
                 ResultStatus.FAILED -> Icon(
                     Icons.Filled.Error,
                     contentDescription = stringResource(R.string.result_failed),
@@ -435,7 +442,9 @@ private fun ResultRow(r: SendResultEntity, onClick: () -> Unit) {
                 if (failed && r.reason.isNotBlank()) {
                     Text(r.reason, color = MaterialTheme.colorScheme.error)
                 }
-                if (r.updatedAt > 0 && (failed || r.status == ResultStatus.SENT)) {
+                if (r.updatedAt > 0 &&
+                    (failed || r.status == ResultStatus.SENT || r.status == ResultStatus.DELIVERED)
+                ) {
                     Text(
                         Formatting.dateTime(r.updatedAt),
                         style = MaterialTheme.typography.bodySmall,

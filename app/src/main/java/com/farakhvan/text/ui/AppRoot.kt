@@ -15,6 +15,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -49,7 +52,34 @@ fun AppRoot(openCampaignId: Long, onOpenCampaignHandled: () -> Unit) {
     val context = LocalContext.current
     val settings = remember { Settings.get(context) }
 
+    // The database behind this screen is a phone book: gate it when the owner asked for a lock.
+    var unlocked by rememberSaveable { mutableStateOf(!settings.appLock) }
+    var showGuide by rememberSaveable { mutableStateOf(!settings.onboardingSeen) }
+
     FarakhvanTheme(themeMode = settings.theme) {
+        if (settings.appLock && !unlocked) {
+            LockScreen(
+                onUnlocked = { unlocked = true },
+                onDisableLock = {
+                    settings.appLock = false
+                    unlocked = true
+                }
+            )
+            return@FarakhvanTheme
+        }
+
+        if (showGuide) {
+            val canSkip = settings.onboardingSeen
+            OnboardingScreen(
+                onDone = {
+                    settings.onboardingSeen = true
+                    showGuide = false
+                },
+                onCancel = if (canSkip) ({ showGuide = false }) else null
+            )
+            return@FarakhvanTheme
+        }
+
         val nav = rememberNavController()
         val entry by nav.currentBackStackEntryAsState()
         val route = entry?.destination?.route
@@ -115,7 +145,10 @@ fun AppRoot(openCampaignId: Long, onOpenCampaignHandled: () -> Unit) {
                     )
                 }
                 composable(Routes.SETTINGS) {
-                    SettingsScreen(onBack = { nav.popBackStack() })
+                    SettingsScreen(
+                        onBack = { nav.popBackStack() },
+                        onOpenGuide = { showGuide = true }
+                    )
                 }
                 composable(
                     Routes.GROUP,

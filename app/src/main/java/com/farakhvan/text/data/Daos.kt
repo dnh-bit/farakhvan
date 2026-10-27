@@ -65,7 +65,7 @@ interface CampaignDao {
     @Query(
         "SELECT c.*, " +
             "(SELECT COUNT(*) FROM send_results r WHERE r.campaignId = c.id) AS total, " +
-            "(SELECT COUNT(*) FROM send_results r WHERE r.campaignId = c.id AND r.status = 'SENT') AS sent, " +
+            "(SELECT COUNT(*) FROM send_results r WHERE r.campaignId = c.id AND r.status IN ('SENT', 'DELIVERED')) AS sent, " +
             "(SELECT COUNT(*) FROM send_results r WHERE r.campaignId = c.id AND r.status = 'FAILED') AS failed " +
             "FROM campaigns c ORDER BY c.createdAt DESC"
     )
@@ -74,7 +74,7 @@ interface CampaignDao {
     @Query(
         "SELECT c.*, " +
             "(SELECT COUNT(*) FROM send_results r WHERE r.campaignId = c.id) AS total, " +
-            "(SELECT COUNT(*) FROM send_results r WHERE r.campaignId = c.id AND r.status = 'SENT') AS sent, " +
+            "(SELECT COUNT(*) FROM send_results r WHERE r.campaignId = c.id AND r.status IN ('SENT', 'DELIVERED')) AS sent, " +
             "(SELECT COUNT(*) FROM send_results r WHERE r.campaignId = c.id AND r.status = 'FAILED') AS failed " +
             "FROM campaigns c WHERE c.id = :id"
     )
@@ -110,14 +110,27 @@ interface ResultDao {
     @Query("SELECT COUNT(*) FROM send_results WHERE campaignId = :campaignId")
     suspend fun totalCount(campaignId: Long): Int
 
-    @Query("SELECT COUNT(*) FROM send_results WHERE campaignId = :campaignId AND status IN ('SENT', 'FAILED')")
+    @Query("SELECT COUNT(*) FROM send_results WHERE campaignId = :campaignId AND status IN ('SENT', 'DELIVERED', 'FAILED')")
     suspend fun doneCount(campaignId: Long): Int
 
     @Query("UPDATE send_results SET status = 'SENDING', reason = '', updatedAt = :now WHERE id = :id")
     suspend fun markSending(id: Long, now: Long)
 
-    @Query("UPDATE send_results SET status = :status, reason = :reason, updatedAt = :now WHERE id = :id")
+    /** A success write must never downgrade a row that already got a delivery report. */
+    @Query(
+        "UPDATE send_results SET " +
+            "status = CASE WHEN status = 'DELIVERED' THEN 'DELIVERED' ELSE :status END, " +
+            "reason = CASE WHEN status = 'DELIVERED' THEN reason ELSE :reason END, " +
+            "updatedAt = :now WHERE id = :id"
+    )
     suspend fun markResult(id: Long, status: String, reason: String, now: Long)
+
+    /** Carrier delivery report (SMS_DELIVERED) for a number that was already accepted. */
+    @Query(
+        "UPDATE send_results SET status = 'DELIVERED', updatedAt = :now " +
+            "WHERE id = :id AND status IN ('SENDING', 'SENT')"
+    )
+    suspend fun markDelivered(id: Long, now: Long)
 
     @Query("UPDATE send_results SET status = 'PENDING', reason = '' WHERE campaignId = :campaignId AND status = 'FAILED'")
     suspend fun resetFailed(campaignId: Long)

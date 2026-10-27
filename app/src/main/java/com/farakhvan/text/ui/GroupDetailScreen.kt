@@ -81,6 +81,7 @@ fun GroupDetailScreen(groupId: Long, onBack: () -> Unit) {
 
     var selected by remember { mutableStateOf(emptySet<Long>()) }
     var dialog by remember { mutableStateOf<GroupDialog?>(null) }
+    var clearSelectionConfirm by remember { mutableStateOf(false) }
     var fabMenu by remember { mutableStateOf(false) }
 
     val group: GroupEntity? = (groupState as? Load.Ready)?.value
@@ -91,7 +92,8 @@ fun GroupDetailScreen(groupId: Long, onBack: () -> Unit) {
         if (groupLoaded && group == null) onBack()
     }
 
-    BackHandler(enabled = selected.isNotEmpty()) { selected = emptySet() }
+    // Back with a live selection asks first: a mis-tap must never wipe a big selection silently.
+    BackHandler(enabled = selected.isNotEmpty()) { clearSelectionConfirm = true }
 
     fun report(r: AddReport) {
         scope.launch {
@@ -345,6 +347,20 @@ fun GroupDetailScreen(groupId: Long, onBack: () -> Unit) {
         )
 
         null -> Unit
+    }
+
+    if (clearSelectionConfirm) {
+        ConfirmDialog(
+            title = stringResource(R.string.selection_clear_title),
+            text = stringResource(R.string.selection_clear_text, selected.size),
+            confirmLabel = stringResource(R.string.selection_clear_action),
+            onConfirm = {
+                clearSelectionConfirm = false
+                selected = emptySet()
+            },
+            onDismiss = { clearSelectionConfirm = false },
+            destructive = true
+        )
     }
 }
 

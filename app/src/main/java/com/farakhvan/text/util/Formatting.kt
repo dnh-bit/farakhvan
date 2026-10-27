@@ -37,6 +37,7 @@ object Formatting {
         for (r in rows) {
             val status = when (r.status) {
                 ResultStatus.SENT -> "sent"
+                ResultStatus.DELIVERED -> "delivered"
                 ResultStatus.FAILED -> "failed"
                 ResultStatus.SENDING -> "sending"
                 else -> "pending"

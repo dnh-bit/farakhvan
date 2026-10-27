@@ -79,7 +79,16 @@ class SendService : Service() {
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             val id = intent.getLongExtra(EXTRA_RESULT_ID, -1L)
-            trackers[id]?.onPart(resultCode)
+            if (id <= 0L) return
+            when (intent.action) {
+                ACTION_SENT -> trackers[id]?.onPart(resultCode)
+                ACTION_DELIVERED -> if (resultCode == Activity.RESULT_OK) {
+                    scope.launch {
+                        AppDatabase.get(applicationContext).resultDao()
+                            .markDelivered(id, System.currentTimeMillis())
+                    }
+                }
+            }
         }
     }
 
@@ -89,7 +98,10 @@ class SendService : Service() {
         ContextCompat.registerReceiver(
             this,
             receiver,
-            IntentFilter(ACTION_SENT),
+            IntentFilter().apply {
+                addAction(ACTION_SENT)
+                addAction(ACTION_DELIVERED)
+            },
             ContextCompat.RECEIVER_NOT_EXPORTED
         )
     }
@@ -102,7 +114,7 @@ class SendService : Service() {
                 val id = intent.getLongExtra(SendController.EXTRA_CAMPAIGN_ID, -1L)
                 ServiceCompat.startForeground(
                     this,
-                    NOTIFICATION_ID,
+                    progressId(id),
                     buildNotification(id, 0, 0, false),
                     if (Build.VERSION.SDK_INT >= 29) ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC else 0
                 )
@@ -231,11 +243,15 @@ class SendService : Service() {
         trackers[row.id] = tracker
         try {
             val sentIntents = ArrayList<PendingIntent>(parts.size)
-            for (i in parts.indices) sentIntents.add(sentIntent(row.id, i))
+            val deliveredIntents = ArrayList<PendingIntent>(parts.size)
+            for (i in parts.indices) {
+                sentIntents.add(sentIntent(row.id, i))
+                deliveredIntents.add(deliveredIntent(row.id, i))
+            }
             if (parts.size == 1) {
-                sms.sendTextMessage(row.number, null, parts[0], sentIntents[0], null)
+                sms.sendTextMessage(row.number, null, parts[0], sentIntents[0], deliveredIntents[0])
             } else {
-                sms.sendMultipartTextMessage(row.number, null, parts, sentIntents, null)
+                sms.sendMultipartTextMessage(row.number, null, parts, sentIntents, deliveredIntents)
             }
             val code: Int = withTimeoutOrNull(RESULT_TIMEOUT_MS) { tracker.done.await() }
                 ?: return getString(R.string.reason_timeout)
@@ -271,6 +287,25 @@ class SendService : Service() {
             PendingIntent.FLAG_IMMUTABLE
         )
     }
+
+    /** Delivery report (SMS_DELIVERED): the recipient's handset confirmed the message. */
+    private fun deliveredIntent(resultId: Long, part: Int): PendingIntent {
+        val intent = Intent(ACTION_DELIVERED)
+            .setPackage(packageName)
+            .putExtra(EXTRA_RESULT_ID, resultId)
+            .putExtra(EXTRA_PART, part)
+        return PendingIntent.getBroadcast(
+            this,
+            requestCodes.getAndIncrement(),
+            intent,
+            PendingIntent.FLAG_IMMUTABLE
+        )
+    }
+
+    /** One notification slot per campaign, so a finished summary is never overwritten by the next run. */
+    private fun progressId(campaignId: Long): Int = 100 + ((campaignId.coerceAtLeast(0) % 400).toInt() * 2)
+
+    private fun summaryId(campaignId: Long): Int = progressId(campaignId) + 1
 
     // ------------------------------------------------------------ wake lock
 
@@ -336,7 +371,7 @@ class SendService : Service() {
     private fun updateProgressNotification(campaignId: Long, done: Int, total: Int) {
         if (Build.VERSION.SDK_INT >= 33 && !hasPermission(Manifest.permission.POST_NOTIFICATIONS)) return
         NotificationManagerCompat.from(this)
-            .notify(NOTIFICATION_ID, buildNotification(campaignId, done, total, false))
+            .notify(progressId(campaignId), buildNotification(campaignId, done, total, false))
     }
 
     @SuppressLint("MissingPermission")
@@ -346,14 +381,13 @@ class SendService : Service() {
         val done = db.resultDao().doneCount(campaignId)
         val total = db.resultDao().totalCount(campaignId)
         NotificationManagerCompat.from(this)
-            .notify(SUMMARY_ID, buildNotification(campaignId, done, total, true))
+            .notify(summaryId(campaignId), buildNotification(campaignId, done, total, true))
     }
 
     companion object {
         private const val CHANNEL_ID = "sending"
-        private const val NOTIFICATION_ID = 1
-        private const val SUMMARY_ID = 2
-        private const val ACTION_SENT = "com.farakhvan.text.SMS_SENT"
+        const val ACTION_SENT = "com.farakhvan.text.SMS_SENT"
+        const val ACTION_DELIVERED = "com.farakhvan.text.SMS_DELIVERED"
         private const val EXTRA_RESULT_ID = "resultId"
         private const val EXTRA_PART = "part"
         private const val RESULT_TIMEOUT_MS = 90_000L

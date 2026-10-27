@@ -51,6 +51,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -68,6 +69,8 @@ import com.farakhvan.text.util.PhoneNormalizer
 import com.farakhvan.text.util.SmsUtil
 import com.farakhvan.text.util.hasPermission
 import com.farakhvan.text.util.ltr
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -99,6 +102,14 @@ fun ComposeScreen(
 
     var names by remember { mutableStateOf<Map<String, String>>(emptyMap()) }
     LaunchedEffect(Unit) { names = ContactsHelper.nameMap(context) }
+
+    // Mirror the draft to disk (debounced) so a process kill cannot destroy it.
+    LaunchedEffect(Unit) {
+        snapshotFlow { Draft.snapshotKey() }.collectLatest {
+            delay(500)
+            Draft.persist(context)
+        }
+    }
 
     // ---- recipients for the chosen target
     val contactSnapshot = Draft.contacts.toList()

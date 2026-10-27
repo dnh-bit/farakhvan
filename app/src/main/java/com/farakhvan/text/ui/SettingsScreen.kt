@@ -45,7 +45,7 @@ import kotlin.math.roundToInt
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsScreen(onBack: () -> Unit) {
+fun SettingsScreen(onBack: () -> Unit, onOpenGuide: () -> Unit) {
     val context = LocalContext.current
     val settings = remember { Settings.get(context) }
 
@@ -85,8 +85,8 @@ fun SettingsScreen(onBack: () -> Unit) {
                 Slider(
                     value = settings.delaySec.toFloat(),
                     onValueChange = { settings.delaySec = it.roundToInt() },
-                    valueRange = 1f..30f,
-                    steps = 28
+                    valueRange = 2f..30f,
+                    steps = 27
                 )
                 Text(
                     stringResource(R.string.settings_delay_hint),
@@ -170,6 +170,28 @@ fun SettingsScreen(onBack: () -> Unit) {
                     )
                 },
                 modifier = Modifier.clickable { settings.confirmBeforeSend = !settings.confirmBeforeSend }
+            )
+            HorizontalDivider(Modifier.padding(vertical = 12.dp))
+
+            // Carrier limits + Unicode cost guide (same content as the first-run screen)
+            ListItem(
+                headlineContent = { Text(stringResource(R.string.settings_guide_title)) },
+                supportingContent = { Text(stringResource(R.string.settings_guide_hint)) },
+                modifier = Modifier.clickable { onOpenGuide() }
+            )
+            HorizontalDivider(Modifier.padding(vertical = 12.dp))
+
+            // Optional lock in front of the phone-number database
+            ListItem(
+                headlineContent = { Text(stringResource(R.string.settings_lock_title)) },
+                supportingContent = { Text(stringResource(R.string.settings_lock_hint)) },
+                trailingContent = {
+                    Switch(
+                        checked = settings.appLock,
+                        onCheckedChange = { settings.appLock = it }
+                    )
+                },
+                modifier = Modifier.clickable { settings.appLock = !settings.appLock }
             )
             HorizontalDivider(Modifier.padding(vertical = 12.dp))
 

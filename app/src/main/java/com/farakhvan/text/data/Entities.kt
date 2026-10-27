@@ -17,7 +17,12 @@ object CampaignStatus {
 object ResultStatus {
     const val PENDING = "PENDING"
     const val SENDING = "SENDING"
+
+    /** Accepted by the network (SMS_SENT) - delivery not confirmed yet. */
     const val SENT = "SENT"
+
+    /** The recipient's handset confirmed the message (SMS_DELIVERED). */
+    const val DELIVERED = "DELIVERED"
     const val FAILED = "FAILED"
 }
 

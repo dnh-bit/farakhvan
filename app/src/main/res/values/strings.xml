@@ -19,7 +19,7 @@
     <string name="action_continue">ادامه</string>
     <string name="action_not_now">الان نه</string>
     <string name="action_close">بستن</string>
-    <string name="action_select_all">انتخاب همه</string>
+    <string name="action_select_all">انتخاب نتایج</string>
     <string name="action_delete">حذف</string>
     <string name="action_undo">بازگردانی</string>
     <string name="action_back">بازگشت</string>
@@ -140,6 +140,7 @@
     <string name="result_sent">ارسال شد</string>
     <string name="result_failed">ناموفق</string>
     <string name="result_pending">در انتظار</string>
+    <string name="result_delivered">تحویل شد</string>
     <string name="export_csv">خروجی CSV</string>
     <string name="export_failed">ساخت فایل خروجی ناموفق بود</string>
     <string name="cancel_confirm_title">لغو ارسال؟</string>
@@ -196,4 +197,55 @@
     <string name="notif_tap_to_return">برای بازگشت به برنامه ضربه بزنید</string>
     <string name="notif_finished_title">ارسال تمام شد</string>
     <string name="notif_finished_text">%1$d از %2$d پیام پردازش شد</string>
+    <!-- Selection guard on the group screen -->
+    <string name="selection_clear_title">پاک‌کردن انتخاب؟</string>
+    <string name="selection_clear_text">%d عضو انتخاب شده است. با بازگشت، این انتخاب پاک می‌شود.</string>
+    <string name="selection_clear_action">پاک کن</string>
+
+    <!-- First-run guide -->
+    <string name="guide_step">%1$d از %2$d</string>
+    <string name="guide_next">بعدی</string>
+    <string name="guide_back">قبلی</string>
+    <string name="guide_start">شروع می‌کنم</string>
+    <string name="guide_page1_title">ریسک اپراتور و محدودیت ارسال</string>
+    <string name="guide_page1_body">اپراتورها ارسال انبوه و پشت‌سرهم را دوست ندارند. اگر بی‌فاصله بفرستی، سیم‌کارتت ممکن است موقتاً محدود یا بلاک شود و چند ساعت از کار بیفتد.
+
+• فاصلهٔ بین پیام‌ها را کمتر از ۲ ثانیه نکن؛ پیش‌فرض ما ۳ ثانیه است.
+• در هر نوبت بیشتر از ۵۰ تا ۱۰۰ پیام نفرست؛ بقیه را نیم ساعت بعد بفرست.
+• فقط به شماره‌هایی پیام بده که از قبل اجازهٔ دریافت دارند.
+• اولین کمپین را با شمارهٔ خودت تست کن.
+• اگر «ناموفق» زیاد شد، یک ساعت صبر کن؛ اصرار، محدودیت را طولانی‌تر می‌کند.
+
+فراخوان پیام‌ها را با فاصله می‌فرستد، ولی مسئولیت حجم و اجازهٔ گیرندگان با توست.</string>
+    <string name="guide_page2_title">یونیکد و هزینهٔ پیامک</string>
+    <string name="guide_page2_body">هر پیامک ظرفیت محدودی دارد و متن فارسی و ایموجی بیشترین جا را می‌گیرند:
+
+• متن انگلیسی یا رقم: ۱۶۰ کاراکتر در یک پیامک، ۱۵۳ کاراکتر در هر بخش پیامک چندبخشی.
+• متن فارسی، عربی یا ایموجی: ۷۰ کاراکتر در یک پیامک، ۶۷ کاراکتر در هر بخش.
+• هر بخش، یک پیامک کامل و یک هزینهٔ کامل حساب می‌شود.
+
+مثال: پیام ۱۴۰ کاراکتری فارسی برای هر نفر ۳ پیامک است؛ برای ۵۰ نفر یعنی ۱۵۰ پیامک.
+
+برای کم نگه داشتن هزینه: جمله‌های کوتاه، بدون ایموجی اضافه، و بدون تکرار نام. شمارندهٔ بالای صفحهٔ ارسال، تعداد بخش‌ها را قبل از ارسال نشان می‌دهد.</string>
+    <string name="guide_page3_title">حریم خصوصی و امنیت</string>
+    <string name="guide_page3_body">فراخوان هیچ مجوز اینترنتی ندارد؛ هیچ داده‌ای از گوشی بیرون نمی‌رود.
+
+• گروه‌ها و شماره‌ها فقط روی همین گوشی ذخیره می‌شوند.
+• بکاپ ابری اندروید برای این برنامه خاموش است.
+• برنامه هیچ‌وقت پیام‌رسان پیش‌فرض نمی‌شود و پیام‌های دریافتی را نمی‌خواند.
+• اگر گوشی دست کسی بیفتد، شمارهٔ مشتری‌ها خواندنی است؛ از «قفل ورود» در تنظیمات استفاده کن.
+• پیش از دادن گوشی به دیگری، پیش‌نویس پیام و لیست انتخاب‌شده را پاک کن.</string>
+
+    <!-- Settings: guide + lock -->
+    <string name="settings_guide_title">راهنمای ارسال و هزینه</string>
+    <string name="settings_guide_hint">ریسک اپراتور، یونیکد و شمارش هزینهٔ پیامک</string>
+    <string name="settings_lock_title">قفل ورود</string>
+    <string name="settings_lock_hint">باز شدن برنامه با اثر انگشت یا رمز گوشی</string>
+
+    <!-- Lock screen -->
+    <string name="lock_title">فراخوان قفل است</string>
+    <string name="lock_subtitle">برای دیدن گروه‌ها و شماره‌ها، هویت خودت را تأیید کن</string>
+    <string name="lock_unlock">باز کردن</string>
+    <string name="lock_unavailable">روی این گوشی اثر انگشت یا رمز صفحه تنظیم نشده است.</string>
+    <string name="lock_disable">خاموش کردن قفل برنامه</string>
 </resources>

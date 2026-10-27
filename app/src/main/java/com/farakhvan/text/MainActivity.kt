@@ -2,16 +2,16 @@ package com.farakhvan.text
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.setValue
+import androidx.fragment.app.FragmentActivity
 import com.farakhvan.text.sending.SendController
 import com.farakhvan.text.ui.AppRoot
 
-class MainActivity : ComponentActivity() {
+class MainActivity : FragmentActivity() {
 
     private var openCampaignId by mutableLongStateOf(-1L)
 

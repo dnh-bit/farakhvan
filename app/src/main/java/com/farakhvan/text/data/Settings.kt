@@ -10,16 +10,18 @@ import androidx.compose.runtime.setValue
 /** Compose-observable app settings backed by SharedPreferences. */
 class Settings private constructor(private val prefs: SharedPreferences) {
 
-    private var _delaySec by mutableIntStateOf(prefs.getInt(KEY_DELAY, 3).coerceIn(1, 30))
+    private var _delaySec by mutableIntStateOf(prefs.getInt(KEY_DELAY, 3).coerceIn(2, 30))
     private var _defaultSim by mutableIntStateOf(prefs.getInt(KEY_SIM, 0))
     private var _theme by mutableIntStateOf(prefs.getInt(KEY_THEME, 0))
     private var _confirm by mutableStateOf(prefs.getBoolean(KEY_CONFIRM, true))
+    private var _appLock by mutableStateOf(prefs.getBoolean(KEY_APP_LOCK, false))
+    private var _onboardingSeen by mutableStateOf(prefs.getBoolean(KEY_ONBOARDING, false))
 
     /** Delay between two messages, 1..30 seconds. */
     var delaySec: Int
         get() = _delaySec
         set(value) {
-            _delaySec = value.coerceIn(1, 30)
+            _delaySec = value.coerceIn(2, 30)
             prefs.edit().putInt(KEY_DELAY, _delaySec).apply()
         }
 
@@ -46,11 +48,29 @@ class Settings private constructor(private val prefs: SharedPreferences) {
             prefs.edit().putBoolean(KEY_CONFIRM, value).apply()
         }
 
+    /** Ask for the device PIN / fingerprint before showing the app. */
+    var appLock: Boolean
+        get() = _appLock
+        set(value) {
+            _appLock = value
+            prefs.edit().putBoolean(KEY_APP_LOCK, value).apply()
+        }
+
+    /** The first-run guide (carrier limits + Unicode cost) has been read. */
+    var onboardingSeen: Boolean
+        get() = _onboardingSeen
+        set(value) {
+            _onboardingSeen = value
+            prefs.edit().putBoolean(KEY_ONBOARDING, value).apply()
+        }
+
     companion object {
         private const val KEY_DELAY = "delay_sec"
         private const val KEY_SIM = "default_sim"
         private const val KEY_THEME = "theme"
         private const val KEY_CONFIRM = "confirm"
+        private const val KEY_APP_LOCK = "app_lock"
+        private const val KEY_ONBOARDING = "onboarding_seen"
 
         @Volatile
         private var instance: Settings? = null

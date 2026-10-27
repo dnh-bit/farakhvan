@@ -16,8 +16,8 @@ android {
         applicationId = "com.farakhvan.text"
         minSdk = 24
         targetSdk = 35
-        versionCode = 3
-        versionName = "0.0.3"
+        versionCode = 4
+        versionName = "0.0.4"
     }
 
     signingConfigs {
@@ -76,6 +76,8 @@ android {
 dependencies {
     implementation("androidx.core:core-ktx:1.15.0")
     implementation("androidx.activity:activity-compose:1.9.3")
+    implementation("androidx.fragment:fragment-ktx:1.8.5")
+    implementation("androidx.biometric:biometric:1.1.0")
     implementation("com.google.android.material:material:1.12.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
 
