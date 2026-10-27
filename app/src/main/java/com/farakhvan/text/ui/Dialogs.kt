@@ -1,6 +1,17 @@
 package com.farakhvan.text.ui
 
 import android.Manifest
+import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Surface
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -86,20 +97,64 @@ fun GroupAvatar(group: GroupEntity, size: Dp = 44.dp) {
     }
 }
 
-/** Create / rename dialog: name, optional emoji, optional color. */
+/** Curated offline emoji set — no keyboard, no font download, identical on every device. */
+private val GroupEmojis: List<String> = listOf(
+    "📣", "📢", "👥", "👨‍👩‍👧", "🏠", "🏪", "🛒", "📚",
+    "🎓", "🕌", "🏥", "🚗", "🚌", "✈️", "⚽", "🎯",
+    "🔥", "⭐", "✅", "📌", "📞", "💬", "🎁", "💡",
+    "💰", "❤️", "🌹", "🌷", "🍀", "☕", "🍕", "🎵",
+    "📷", "🛠️", "💼", "👷", "🚚", "🧾", "📊", "📅",
+    "⏰", "🔔", "😀", "😎", "🙏", "👍", "✨", "🎉"
+)
+
+@Composable
+private fun EmojiChoice(text: String, selected: Boolean, onClick: () -> Unit) {
+    Box(
+        modifier = Modifier
+            .size(40.dp)
+            .clip(MaterialTheme.shapes.small)
+            .background(
+                if (selected) MaterialTheme.colorScheme.primaryContainer
+                else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.35f)
+            )
+            .then(
+                if (selected) Modifier.border(2.dp, MaterialTheme.colorScheme.primary, MaterialTheme.shapes.small)
+                else Modifier
+            )
+            .clickable(onClick = onClick),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(text = text, style = MaterialTheme.typography.titleLarge)
+    }
+}
+
+/** Create / rename dialog: name, emoji picked in-app (no keyboard), optional color. */
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun GroupEditDialog(
     initial: GroupEntity?,
     onDismiss: () -> Unit,
     onConfirm: (name: String, emoji: String, color: Int) -> Unit
 ) {
-    var name by remember { mutableStateOf(initial?.name.orEmpty()) }
-    var emoji by remember { mutableStateOf(initial?.emoji.orEmpty()) }
-    var color by remember {
-        mutableIntStateOf(initial?.color?.takeIf { it != 0 } ?: GroupColors[0])
+    val initialName = initial?.name.orEmpty()
+    val initialEmoji = initial?.emoji.orEmpty()
+    val initialColor = initial?.color?.takeIf { it != 0 } ?: GroupColors[0]
+
+    var name by remember { mutableStateOf(initialName) }
+    var emoji by remember { mutableStateOf(initialEmoji) }
+    var color by remember { mutableIntStateOf(initialColor) }
+    var confirmDiscard by remember { mutableStateOf(false) }
+
+    val dirty = name != initialName || emoji != initialEmoji || color != initialColor
+
+    fun requestClose() {
+        if (dirty) confirmDiscard = true else onDismiss()
     }
+
+    BackHandler(enabled = dirty && !confirmDiscard) { confirmDiscard = true }
+
     AlertDialog(
-        onDismissRequest = onDismiss,
+        onDismissRequest = { requestClose() },
         title = {
             Text(
                 stringResource(
@@ -108,21 +163,51 @@ fun GroupEditDialog(
             )
         },
         text = {
-            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 OutlinedTextField(
                     value = name,
-                    onValueChange = { name = it },
+                    onValueChange = { name = it.take(60) },
                     label = { Text(stringResource(R.string.group_name)) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth()
                 )
-                OutlinedTextField(
-                    value = emoji,
-                    onValueChange = { emoji = it.take(4) },
-                    label = { Text(stringResource(R.string.group_emoji_optional)) },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth()
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        stringResource(R.string.group_emoji_optional),
+                        style = MaterialTheme.typography.labelLarge
+                    )
+                    if (emoji.isNotBlank()) {
+                        TextButton(
+                            onClick = { emoji = "" },
+                            contentPadding = PaddingValues(horizontal = 8.dp)
+                        ) {
+                            Text(stringResource(R.string.contacts_clear))
+                        }
+                    }
+                }
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(max = 168.dp)
+                        .verticalScroll(rememberScrollState())
+                ) {
+                    FlowRow(
+                        horizontalArrangement = Arrangement.spacedBy(6.dp),
+                        verticalArrangement = Arrangement.spacedBy(6.dp)
+                    ) {
+                        GroupEmojis.forEach { e ->
+                            EmojiChoice(
+                                text = e,
+                                selected = e == emoji,
+                                onClick = { emoji = if (emoji == e) "" else e }
+                            )
+                        }
+                    }
+                }
                 Text(
                     stringResource(R.string.group_color),
                     style = MaterialTheme.typography.labelLarge
@@ -165,9 +250,23 @@ fun GroupEditDialog(
             ) { Text(stringResource(R.string.action_save)) }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) { Text(stringResource(R.string.action_cancel)) }
+            TextButton(onClick = { requestClose() }) { Text(stringResource(R.string.action_cancel)) }
         }
     )
+
+    if (confirmDiscard) {
+        ConfirmDialog(
+            title = stringResource(R.string.discard_title),
+            text = stringResource(R.string.discard_group_text),
+            confirmLabel = stringResource(R.string.action_discard),
+            onConfirm = {
+                confirmDiscard = false
+                onDismiss()
+            },
+            onDismiss = { confirmDiscard = false },
+            destructive = true
+        )
+    }
 }
 
 @Composable
@@ -218,7 +317,13 @@ fun RationaleDialog(
     )
 }
 
-/** Full-screen multi-select contact picker (replaces the old MultiContactPicker library). */
+/** Full-screen multi-select contact picker (replaces the old MultiContactPicker library).
+ *
+ *  Keyboard safety: the dialog window does not fit system windows, the whole scaffold gets
+ *  imePadding(), and the submit button lives in a bottomBar Surface — so it stays visible
+ *  above the keyboard instead of hiding behind it. Going back with a non-empty selection
+ *  always asks for confirmation first.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ContactPickerDialog(
@@ -236,6 +341,7 @@ fun ContactPickerDialog(
     var failed by remember { mutableStateOf(false) }
     var query by remember { mutableStateOf("") }
     val selected = remember { mutableStateListOf<String>() }
+    var confirmDiscard by remember { mutableStateOf(false) }
 
     LaunchedEffect(granted) {
         if (granted) {
@@ -256,16 +362,39 @@ fun ContactPickerDialog(
         }
     }
 
+    fun submit() {
+        val chosen = contacts.orEmpty().filter { it.number in selected }
+        if (chosen.isNotEmpty()) onPicked(chosen)
+    }
+
+    fun requestClose() {
+        if (selected.isNotEmpty()) confirmDiscard = true else onDismiss()
+    }
+
     Dialog(
-        onDismissRequest = onDismiss,
-        properties = DialogProperties(usePlatformDefaultWidth = false)
+        onDismissRequest = { requestClose() },
+        properties = DialogProperties(
+            usePlatformDefaultWidth = false,
+            decorFitsSystemWindows = false
+        )
     ) {
+        BackHandler(enabled = true) { requestClose() }
+
         Scaffold(
+            modifier = Modifier
+                .fillMaxSize()
+                .statusBarsPadding()
+                .imePadding(),
             topBar = {
                 TopAppBar(
-                    title = { Text(stringResource(R.string.contacts_pick_title)) },
+                    title = {
+                        Text(
+                            if (selected.isEmpty()) stringResource(R.string.contacts_pick_title)
+                            else stringResource(R.string.contacts_selected, selected.size)
+                        )
+                    },
                     navigationIcon = {
-                        IconButton(onClick = onDismiss) {
+                        IconButton(onClick = { requestClose() }) {
                             Icon(Icons.Filled.Close, contentDescription = stringResource(R.string.action_close))
                         }
                     },
@@ -285,23 +414,35 @@ fun ContactPickerDialog(
                                 )
                             }
                         }
+                        if (selected.isNotEmpty()) {
+                            TextButton(onClick = { submit() }) {
+                                Text(stringResource(R.string.contacts_submit, selected.size))
+                            }
+                        }
                     }
                 )
             },
             bottomBar = {
                 if (granted) {
-                    Box(Modifier.padding(16.dp)) {
-                        Button(
-                            onClick = {
-                                val chosen = contacts.orEmpty().filter { it.number in selected }
-                                onPicked(chosen)
-                            },
-                            enabled = selected.isNotEmpty(),
+                    Surface(tonalElevation = 3.dp) {
+                        Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(52.dp)
+                                .navigationBarsPadding()
+                                .padding(horizontal = 16.dp, vertical = 12.dp)
                         ) {
-                            Text(stringResource(R.string.contacts_add_selected, selected.size))
+                            Button(
+                                onClick = { submit() },
+                                enabled = selected.isNotEmpty(),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(52.dp)
+                            ) {
+                                Text(
+                                    if (selected.isEmpty()) stringResource(R.string.contacts_none_selected)
+                                    else stringResource(R.string.contacts_add_selected, selected.size)
+                                )
+                            }
                         }
                     }
                 }
@@ -365,7 +506,7 @@ fun ContactPickerDialog(
                                 title = stringResource(R.string.search_no_result)
                             )
                         } else {
-                            LazyColumn(Modifier.fillMaxSize()) {
+                            LazyColumn(Modifier.weight(1f)) {
                                 items(visible, key = { it.number }) { c ->
                                     val checked = c.number in selected
                                     ListItem(
@@ -387,5 +528,19 @@ fun ContactPickerDialog(
                 }
             }
         }
+    }
+
+    if (confirmDiscard) {
+        ConfirmDialog(
+            title = stringResource(R.string.discard_title),
+            text = stringResource(R.string.discard_contacts_text, selected.size),
+            confirmLabel = stringResource(R.string.action_discard),
+            onConfirm = {
+                confirmDiscard = false
+                onDismiss()
+            },
+            onDismiss = { confirmDiscard = false },
+            destructive = true
+        )
     }
 }

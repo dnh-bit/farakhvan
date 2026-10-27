@@ -79,6 +79,12 @@
     <string name="contacts_pick_button">انتخاب مخاطبین</string>
     <string name="contacts_selected">%d مخاطب انتخاب شده</string>
     <string name="contacts_clear">پاک‌کردن</string>
+    <string name="contacts_none_selected">مخاطبی انتخاب نشده</string>
+    <string name="contacts_submit">ثبت (%d)</string>
+    <string name="discard_title">خروج بدون ذخیره؟</string>
+    <string name="discard_contacts_text">%d مخاطب انتخاب کرده بودی؛ با بیرون رفتن، این انتخاب پاک می‌شود.</string>
+    <string name="discard_group_text">نام یا ایموجی گروه ذخیره نشده است. مطمئنی می‌خواهی بیرون بروی؟</string>
+    <string name="action_discard">بیرون رفتن</string>
 
     <!-- Permissions -->
     <string name="perm_contacts_explain">برای انتخاب گیرنده‌ها از دفترچهٔ تلفن، فراخوان به مخاطبین شما نیاز دارد. مخاطبین هرگز از گوشی بیرون نمی‌روند.</string>
