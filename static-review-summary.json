@@ -1,7 +1,7 @@
 {
-  "static_checks": 4248,
+  "static_checks": 4379,
   "kotlin_files": 28,
-  "string_resources": 193,
+  "string_resources": 200,
   "room_sql_statements": 26,
   "xml_files": 6,
   "compiled": false,

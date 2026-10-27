@@ -71,7 +71,19 @@ fun AppRoot(openCampaignId: Long, onOpenCampaignHandled: () -> Unit) {
         if (showGuide) {
             val canSkip = settings.onboardingSeen
             OnboardingScreen(
-                onDone = {
+                lockEnabled = settings.appLock,
+                showLockCard = !settings.lockHintHidden,
+                onDismissLockCard = { settings.lockHintHidden = true },
+                onSkip = {
+                    settings.onboardingSeen = true
+                    showGuide = false
+                },
+                onFinish = { enableLock ->
+                    if (enableLock) {
+                        // Lock immediately so the user sees the gate work, not just a switch flip.
+                        settings.appLock = true
+                        unlocked = false
+                    }
                     settings.onboardingSeen = true
                     showGuide = false
                 },
@@ -147,7 +159,11 @@ fun AppRoot(openCampaignId: Long, onOpenCampaignHandled: () -> Unit) {
                 composable(Routes.SETTINGS) {
                     SettingsScreen(
                         onBack = { nav.popBackStack() },
-                        onOpenGuide = { showGuide = true }
+                        onOpenGuide = { showGuide = true },
+                        onAppLockChange = { enabled ->
+                            settings.appLock = enabled
+                            unlocked = !enabled
+                        }
                     )
                 }
                 composable(

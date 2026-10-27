@@ -16,6 +16,7 @@ class Settings private constructor(private val prefs: SharedPreferences) {
     private var _confirm by mutableStateOf(prefs.getBoolean(KEY_CONFIRM, true))
     private var _appLock by mutableStateOf(prefs.getBoolean(KEY_APP_LOCK, false))
     private var _onboardingSeen by mutableStateOf(prefs.getBoolean(KEY_ONBOARDING, false))
+    private var _lockHintHidden by mutableStateOf(prefs.getBoolean(KEY_LOCK_HINT, false))
 
     /** Delay between two messages, 1..30 seconds. */
     var delaySec: Int
@@ -64,6 +65,14 @@ class Settings private constructor(private val prefs: SharedPreferences) {
             prefs.edit().putBoolean(KEY_ONBOARDING, value).apply()
         }
 
+    /** The "turn the app lock on" card was dismissed with «دیگر نشانم نده». */
+    var lockHintHidden: Boolean
+        get() = _lockHintHidden
+        set(value) {
+            _lockHintHidden = value
+            prefs.edit().putBoolean(KEY_LOCK_HINT, value).apply()
+        }
+
     companion object {
         private const val KEY_DELAY = "delay_sec"
         private const val KEY_SIM = "default_sim"
@@ -71,6 +80,7 @@ class Settings private constructor(private val prefs: SharedPreferences) {
         private const val KEY_CONFIRM = "confirm"
         private const val KEY_APP_LOCK = "app_lock"
         private const val KEY_ONBOARDING = "onboarding_seen"
+        private const val KEY_LOCK_HINT = "lock_hint_hidden"
 
         @Volatile
         private var instance: Settings? = null

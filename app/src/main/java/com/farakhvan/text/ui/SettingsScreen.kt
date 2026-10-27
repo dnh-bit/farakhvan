@@ -45,7 +45,11 @@ import kotlin.math.roundToInt
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsScreen(onBack: () -> Unit, onOpenGuide: () -> Unit) {
+fun SettingsScreen(
+    onBack: () -> Unit,
+    onOpenGuide: () -> Unit,
+    onAppLockChange: (Boolean) -> Unit
+) {
     val context = LocalContext.current
     val settings = remember { Settings.get(context) }
 
@@ -188,10 +192,10 @@ fun SettingsScreen(onBack: () -> Unit, onOpenGuide: () -> Unit) {
                 trailingContent = {
                     Switch(
                         checked = settings.appLock,
-                        onCheckedChange = { settings.appLock = it }
+                        onCheckedChange = onAppLockChange
                     )
                 },
-                modifier = Modifier.clickable { settings.appLock = !settings.appLock }
+                modifier = Modifier.clickable { onAppLockChange(!settings.appLock) }
             )
             HorizontalDivider(Modifier.padding(vertical = 12.dp))
 
