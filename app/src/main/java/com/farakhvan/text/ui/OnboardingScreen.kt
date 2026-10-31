@@ -1,7 +1,6 @@
 package com.farakhvan.text.ui
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,13 +18,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Fingerprint
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -33,7 +30,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -41,7 +37,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -78,19 +73,14 @@ private val GuidePages = listOf(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OnboardingScreen(
-    onFinish: (enableLock: Boolean) -> Unit,
+    onFinish: () -> Unit,
     onSkip: () -> Unit,
-    onCancel: (() -> Unit)? = null,
-    lockEnabled: Boolean,
-    showLockCard: Boolean,
-    onDismissLockCard: () -> Unit
+    onCancel: (() -> Unit)? = null
 ) {
     var page by rememberSaveable { mutableIntStateOf(0) }
-    var dontShowAgain by rememberSaveable { mutableStateOf(false) }
 
     val current = GuidePages[page.coerceIn(0, GuidePages.lastIndex)]
     val isLast = page == GuidePages.lastIndex
-    val offerLock = isLast && showLockCard && !lockEnabled
 
     Scaffold(
         topBar = {
@@ -164,19 +154,6 @@ fun OnboardingScreen(
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
 
-                    if (offerLock) {
-                        Spacer(Modifier.height(18.dp))
-                        LockRecommendation(
-                            dontShowAgain = dontShowAgain,
-                            onDontShowAgainChange = {
-                                dontShowAgain = it
-                                onDismissLockCard()
-                            },
-                            onEnable = { onFinish(true) },
-                            onLater = { onFinish(false) }
-                        )
-                    }
-
                     Spacer(Modifier.height(18.dp))
                 }
             }
@@ -196,7 +173,7 @@ fun OnboardingScreen(
                 Spacer(Modifier.weight(1f))
                 Button(
                     onClick = {
-                        if (!isLast) page += 1 else onFinish(false)
+                        if (!isLast) page += 1 else onFinish()
                     },
                     shape = RoundedCornerShape(16.dp),
                     modifier = Modifier.height(50.dp)
@@ -265,78 +242,5 @@ private fun IconBadge(icon: ImageVector, tone: GuideTone) {
         contentAlignment = Alignment.Center
     ) {
         Icon(icon, contentDescription = null, tint = content, modifier = Modifier.size(30.dp))
-    }
-}
-
-@Composable
-private fun LockRecommendation(
-    dontShowAgain: Boolean,
-    onDontShowAgainChange: (Boolean) -> Unit,
-    onEnable: () -> Unit,
-    onLater: () -> Unit
-) {
-    Surface(
-        shape = RoundedCornerShape(22.dp),
-        color = MaterialTheme.colorScheme.secondaryContainer,
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Column(modifier = Modifier.padding(18.dp)) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    Icons.Filled.Fingerprint,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSecondaryContainer,
-                    modifier = Modifier.size(26.dp)
-                )
-                Spacer(Modifier.width(10.dp))
-                Text(
-                    text = stringResource(R.string.guide_lock_title),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                )
-            }
-            Spacer(Modifier.height(10.dp))
-            Text(
-                text = stringResource(R.string.guide_lock_body),
-                style = MaterialTheme.typography.bodySmall,
-                lineHeight = 21.sp,
-                color = MaterialTheme.colorScheme.onSecondaryContainer
-            )
-            Spacer(Modifier.height(14.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Button(
-                    onClick = onEnable,
-                    shape = RoundedCornerShape(14.dp),
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Text(
-                        text = stringResource(R.string.guide_lock_enable),
-                        fontWeight = FontWeight.SemiBold
-                    )
-                }
-                TextButton(onClick = onLater) {
-                    Text(stringResource(R.string.guide_lock_later))
-                }
-            }
-            Spacer(Modifier.height(4.dp))
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { onDontShowAgainChange(!dontShowAgain) },
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Checkbox(checked = dontShowAgain, onCheckedChange = onDontShowAgainChange)
-                Text(
-                    text = stringResource(R.string.guide_lock_dont_show),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                )
-            }
-        }
     }
 }

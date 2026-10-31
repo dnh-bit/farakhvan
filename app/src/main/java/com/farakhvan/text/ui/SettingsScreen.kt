@@ -47,8 +47,7 @@ import kotlin.math.roundToInt
 @Composable
 fun SettingsScreen(
     onBack: () -> Unit,
-    onOpenGuide: () -> Unit,
-    onAppLockChange: (Boolean) -> Unit
+    onOpenGuide: () -> Unit
 ) {
     val context = LocalContext.current
     val settings = remember { Settings.get(context) }
@@ -182,20 +181,6 @@ fun SettingsScreen(
                 headlineContent = { Text(stringResource(R.string.settings_guide_title)) },
                 supportingContent = { Text(stringResource(R.string.settings_guide_hint)) },
                 modifier = Modifier.clickable { onOpenGuide() }
-            )
-            HorizontalDivider(Modifier.padding(vertical = 12.dp))
-
-            // Optional lock in front of the phone-number database
-            ListItem(
-                headlineContent = { Text(stringResource(R.string.settings_lock_title)) },
-                supportingContent = { Text(stringResource(R.string.settings_lock_hint)) },
-                trailingContent = {
-                    Switch(
-                        checked = settings.appLock,
-                        onCheckedChange = onAppLockChange
-                    )
-                },
-                modifier = Modifier.clickable { onAppLockChange(!settings.appLock) }
             )
             HorizontalDivider(Modifier.padding(vertical = 12.dp))
 

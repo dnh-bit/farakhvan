@@ -52,38 +52,17 @@ fun AppRoot(openCampaignId: Long, onOpenCampaignHandled: () -> Unit) {
     val context = LocalContext.current
     val settings = remember { Settings.get(context) }
 
-    // The database behind this screen is a phone book: gate it when the owner asked for a lock.
-    var unlocked by rememberSaveable { mutableStateOf(!settings.appLock) }
     var showGuide by rememberSaveable { mutableStateOf(!settings.onboardingSeen) }
 
     FarakhvanTheme(themeMode = settings.theme) {
-        if (settings.appLock && !unlocked) {
-            LockScreen(
-                onUnlocked = { unlocked = true },
-                onDisableLock = {
-                    settings.appLock = false
-                    unlocked = true
-                }
-            )
-            return@FarakhvanTheme
-        }
-
         if (showGuide) {
             val canSkip = settings.onboardingSeen
             OnboardingScreen(
-                lockEnabled = settings.appLock,
-                showLockCard = !settings.lockHintHidden,
-                onDismissLockCard = { settings.lockHintHidden = true },
                 onSkip = {
                     settings.onboardingSeen = true
                     showGuide = false
                 },
-                onFinish = { enableLock ->
-                    if (enableLock) {
-                        // Lock immediately so the user sees the gate work, not just a switch flip.
-                        settings.appLock = true
-                        unlocked = false
-                    }
+                onFinish = {
                     settings.onboardingSeen = true
                     showGuide = false
                 },
@@ -159,11 +138,7 @@ fun AppRoot(openCampaignId: Long, onOpenCampaignHandled: () -> Unit) {
                 composable(Routes.SETTINGS) {
                     SettingsScreen(
                         onBack = { nav.popBackStack() },
-                        onOpenGuide = { showGuide = true },
-                        onAppLockChange = { enabled ->
-                            settings.appLock = enabled
-                            unlocked = !enabled
-                        }
+                        onOpenGuide = { showGuide = true }
                     )
                 }
                 composable(

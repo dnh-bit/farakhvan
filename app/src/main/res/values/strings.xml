@@ -209,11 +209,6 @@
     <string name="guide_start">شروع می‌کنم</string>
     <string name="guide_header">راهنمای شروع</string>
     <string name="guide_skip">رد کردن</string>
-    <string name="guide_lock_title">قفل ورود را روشن کن</string>
-    <string name="guide_lock_body">اگر گوشی دست کسی بیفتد، شمارهٔ همهٔ مشتری‌ها خواندنی است. با قفل ورود، باز شدن برنامه به اثر انگشت یا رمز خودِ گوشی گره می‌خورد؛ فراخوان هیچ رمز و اثری از خودش ذخیره نمی‌کند.</string>
-    <string name="guide_lock_enable">روشنش کن</string>
-    <string name="guide_lock_later">بعداً</string>
-    <string name="guide_lock_dont_show">دیگر نشانم نده</string>
     <string name="guide_page1_title">ریسک اپراتور و محدودیت ارسال</string>
     <string name="guide_page1_body">اپراتورها ارسال انبوه و پشت‌سرهم را دوست ندارند. اگر بی‌فاصله بفرستی، سیم‌کارتت ممکن است موقتاً محدود یا بلاک شود و چند ساعت از کار بیفتد.
 
@@ -243,16 +238,8 @@
 • اگر گوشی دست کسی بیفتد، شمارهٔ مشتری‌ها خواندنی است؛ از «قفل ورود» در تنظیمات استفاده کن.
 • پیش از دادن گوشی به دیگری، پیش‌نویس پیام و لیست انتخاب‌شده را پاک کن.</string>
 
-    <!-- Settings: guide + lock -->
+    <!-- Settings: guide -->
     <string name="settings_guide_title">راهنمای ارسال و هزینه</string>
     <string name="settings_guide_hint">ریسک اپراتور، یونیکد و شمارش هزینهٔ پیامک</string>
-    <string name="settings_lock_title">قفل ورود</string>
-    <string name="settings_lock_hint">باز شدن برنامه با اثر انگشت یا رمز گوشی</string>
 
-    <!-- Lock screen -->
-    <string name="lock_title">فراخوان قفل است</string>
-    <string name="lock_subtitle">برای دیدن گروه‌ها و شماره‌ها، هویت خودت را تأیید کن</string>
-    <string name="lock_unlock">باز کردن</string>
-    <string name="lock_unavailable">روی این گوشی اثر انگشت یا رمز صفحه تنظیم نشده است.</string>
-    <string name="lock_disable">خاموش کردن قفل برنامه</string>
 </resources>
